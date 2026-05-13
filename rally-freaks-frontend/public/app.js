@@ -693,8 +693,8 @@ async function loadChannels(url) {
   await logEvent("channels_fetch_start", { url });
   setDiag(refs.sessionDiag, "warn", "Canais: a carregar");
 
-  // USAR O NOVO WORKER CENTRAL DE CANAIS COM BYPASS CORS
-  const channelsApi = `https://streamflix-v2-channels.cristianoronaldocr7.workers.dev/?url=${encodeURIComponent(url)}`;
+  // USAR O PROXY DO DISCORD ACTIVITY (MAPADO NO WRANGLER.TOML)
+  const channelsApi = `/.proxy/channels-api/?url=${encodeURIComponent(url)}`;
 
   try {
     const response = await fetch(channelsApi);
@@ -1044,10 +1044,10 @@ async function playChannel(channel, autoplay, context = {}) {
   let finalUrl = channel.url;
   
   if (isStalker) {
-    finalUrl = `/api/stalker/resolve?url=${encodeURIComponent(channel.url)}&mac=00:1A:79:00:00:00`;
+    finalUrl = `/.proxy/stream-proxy/resolve?url=${encodeURIComponent(channel.url)}&mac=00:1A:79:00:00:00`;
   }
 
-  const proxyUrlObj = new URL("/api/proxy", location.origin);
+  const proxyUrlObj = new URL("/.proxy/stream-proxy", location.origin);
   proxyUrlObj.searchParams.set("url", finalUrl);
   proxyUrlObj.searchParams.set("userAgent", "VLC/3.0.18 LibVLC/3.0.18");
   const proxyUrl = proxyUrlObj.pathname + proxyUrlObj.search;
