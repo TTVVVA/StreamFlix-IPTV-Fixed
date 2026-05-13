@@ -741,12 +741,12 @@ function renderGroups() {
     button.type = "button";
     button.innerHTML = `
       <span class="channel-number">📁</span>
-      <span class="channel-name">${escapeHtml(group)}</span>
-      <span class="signal" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="channel-name">${escapeHtml(group.name)}</span>
+      <span class="signal" aria-hidden="true">${group.count} canais</span>
     `;
     button.addEventListener("click", () => {
       markUserGesture("group.click");
-      loadChannels(state.session?.channelsUrl || DEFAULT_M3U, group);
+      loadChannels(state.session?.channelsUrl || DEFAULT_M3U, group.name);
     });
     fragment.appendChild(button);
   });
