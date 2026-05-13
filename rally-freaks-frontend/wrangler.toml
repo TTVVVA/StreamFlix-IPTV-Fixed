@@ -1,0 +1,9 @@
+name = "streamflix-v2-frontend"
+main = "worker.js"
+compatibility_date = "2025-08-01"
+account_id = "874a220e5e5bae3c5edcb7497a55635b"
+
+assets = { directory = "./public", binding = "ASSETS" }
+
+[vars]
+DISCORD_CLIENT_ID = "1492207969885225030"

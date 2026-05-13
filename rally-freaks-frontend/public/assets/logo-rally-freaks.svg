@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 180" role="img" aria-labelledby="title desc">
+  <title id="title">Rally Freaks logo</title>
+  <desc id="desc">RF logo with rally car and stylized driver.</desc>
+  <defs>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#29d7ff"/>
+      <stop offset="0.55" stop-color="#0079ff"/>
+      <stop offset="1" stop-color="#003da8"/>
+    </linearGradient>
+    <linearGradient id="car" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#061326"/>
+      <stop offset="0.55" stop-color="#0c315f"/>
+      <stop offset="1" stop-color="#020711"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="620" height="180" fill="none"/>
+  <g filter="url(#glow)">
+    <path d="M44 38h132" stroke="#0063ff" stroke-width="9" stroke-linecap="round" opacity=".35"/>
+    <path d="M27 62h132" stroke="#1599ff" stroke-width="8" stroke-linecap="round" opacity=".65"/>
+    <path d="M15 91h118" stroke="#21d7ff" stroke-width="7" stroke-linecap="round" opacity=".74"/>
+    <path d="M33 122h100" stroke="#148cff" stroke-width="6" stroke-linecap="round" opacity=".42"/>
+    <circle cx="144" cy="87" r="73" fill="none" stroke="url(#blue)" stroke-width="9"/>
+    <path d="M93 52h95c29 0 40 24 24 42-10 12-26 18-50 18h-29l-11 34H75l28-94z" fill="#f6fbff"/>
+    <path d="M146 73h54c10 0 13 9 5 15-4 3-11 5-19 5h-50l10-20z" fill="#06111f"/>
+    <path d="M179 103h108l-21 43H158l21-43z" fill="url(#blue)"/>
+    <path d="M194 63h118l-22 41H172l22-41z" fill="#21d7ff"/>
+  </g>
+
+  <g transform="translate(230 42)">
+    <path d="M48 55c27-34 67-47 126-39 57 8 94 30 113 65H48z" fill="url(#car)" stroke="#279dff" stroke-width="2.5"/>
+    <path d="M89 22h90c25 4 44 15 60 33H55c11-17 22-28 34-33z" fill="#061326" stroke="#35c6ff" stroke-width="2.5"/>
+    <path d="M106 29h54l27 21H85l21-21z" fill="#174e83"/>
+    <path d="M20 56h312c14 0 25 10 29 24l4 16H8l6-25c2-9 4-14 6-15z" fill="#061021" stroke="#1498ff" stroke-width="2.5"/>
+    <path d="M99 67h84l-12 24H87z" fill="#e32638" opacity=".9"/>
+    <path d="M227 65h57c14 0 25 7 31 21H215z" fill="#0b67c8"/>
+    <circle cx="75" cy="97" r="27" fill="#01040b" stroke="#a9dcff" stroke-width="6"/>
+    <circle cx="283" cy="97" r="27" fill="#01040b" stroke="#a9dcff" stroke-width="6"/>
+    <circle cx="75" cy="97" r="10" fill="#1e456c"/>
+    <circle cx="283" cy="97" r="10" fill="#1e456c"/>
+    <path d="M19 72h58" stroke="#f2f8ff" stroke-width="5" stroke-linecap="round"/>
+    <path d="M255 72h73" stroke="#2bd4ff" stroke-width="6" stroke-linecap="round"/>
+    <text x="132" y="83" fill="#e9f7ff" font-size="16" font-weight="900" font-family="Inter, Arial">RALLY</text>
+    <text x="190" y="83" fill="#29d7ff" font-size="16" font-weight="900" font-family="Inter, Arial">FREAKS</text>
+  </g>
+
+  <g transform="translate(500 18)">
+    <path d="M57 20c30 0 51 27 47 60-4 36-26 61-51 61-25 0-47-25-51-61C-2 47 26 20 57 20z" fill="#e7cbbb"/>
+    <path d="M12 123c12-26 29-40 48-40 20 0 38 14 51 40v39H12v-39z" fill="#0a1325"/>
+    <path d="M21 132h80" stroke="#f7fbff" stroke-width="7" opacity=".95"/>
+    <path d="M30 145h62" stroke="#e32638" stroke-width="6" opacity=".95"/>
+    <path d="M19 54c8-31 50-44 77-15 10 11 10 27 5 43-9-21-27-31-51-31-15 0-24 2-31 3z" fill="#1c2330"/>
+    <circle cx="42" cy="69" r="3.6" fill="#111925"/>
+    <circle cx="72" cy="69" r="3.6" fill="#111925"/>
+    <path d="M43 94c10 7 22 7 32 0" stroke="#774135" stroke-width="4" stroke-linecap="round" fill="none" opacity=".55"/>
+    <text x="32" y="130" fill="#fff" font-size="11" font-weight="900" font-family="Inter, Arial">OGIER</text>
+  </g>
+</svg>

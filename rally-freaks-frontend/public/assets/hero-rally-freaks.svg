@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 720" role="img" aria-labelledby="title desc">
+  <title id="title">Rally Freaks hero</title>
+  <desc id="desc">Dark rally streaming hero art with RF logo, rally car and stylized driver.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020714"/>
+      <stop offset="0.55" stop-color="#06142b"/>
+      <stop offset="1" stop-color="#020711"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2bd4ff"/>
+      <stop offset="0.55" stop-color="#0084ff"/>
+      <stop offset="1" stop-color="#0041b9"/>
+    </linearGradient>
+    <linearGradient id="car" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071428"/>
+      <stop offset="0.5" stop-color="#0e376a"/>
+      <stop offset="1" stop-color="#02050c"/>
+    </linearGradient>
+    <radialGradient id="light" cx="68%" cy="34%" r="55%">
+      <stop offset="0" stop-color="#0f8cff" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#0f8cff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="28" stdDeviation="24" flood-color="#000" flood-opacity=".64"/>
+    </filter>
+  </defs>
+
+  <rect width="1320" height="720" fill="url(#bg)"/>
+  <rect width="1320" height="720" fill="url(#light)"/>
+  <g opacity=".45">
+    <path d="M-120 620C220 470 520 410 980 410" stroke="#006eff" stroke-width="9" opacity=".35" filter="url(#glow)"/>
+    <path d="M300 100 40 630" stroke="#0a7fff" stroke-width="2" opacity=".22"/>
+    <path d="M660 40 240 650" stroke="#2bd4ff" stroke-width="2" opacity=".12"/>
+    <path d="M1130 70 690 690" stroke="#0a7fff" stroke-width="2" opacity=".18"/>
+  </g>
+
+  <g transform="translate(72 138)" filter="url(#glow)">
+    <path d="M25 70h140" stroke="#005fe8" stroke-width="13" stroke-linecap="round" opacity=".42"/>
+    <path d="M5 106h165" stroke="#148fff" stroke-width="12" stroke-linecap="round" opacity=".72"/>
+    <path d="M35 145h132" stroke="#2bd4ff" stroke-width="9" stroke-linecap="round" opacity=".48"/>
+    <circle cx="188" cy="110" r="96" fill="none" stroke="url(#blue)" stroke-width="12" opacity=".9"/>
+    <path d="M126 66h122c37 0 50 29 31 53-12 15-33 22-64 22h-36l-14 41h-60l36-116z" fill="#f4f8ff"/>
+    <path d="M195 90h68c13 0 17 11 7 18-6 4-14 6-24 6h-64l13-24z" fill="#030a14"/>
+    <path d="M236 129h136l-26 53H210l26-53z" fill="url(#blue)"/>
+    <path d="M256 78h145l-27 52H228l28-52z" fill="#21d5ff"/>
+  </g>
+
+  <text x="78" y="468" fill="#f5f9ff" font-size="70" font-weight="900" font-family="Inter, Arial" letter-spacing="-4">RALLY</text>
+  <text x="312" y="468" fill="#1498ff" font-size="70" font-weight="900" font-family="Inter, Arial" letter-spacing="-4">FREAKS</text>
+  <text x="83" y="512" fill="#e8f3ff" font-size="21" font-weight="800" font-family="Inter, Arial" letter-spacing="8">AO VIVO. RALLY. SEM LIMITES.</text>
+
+  <g transform="translate(765 74)" filter="url(#shadow)">
+    <path d="M144 25c70 0 118 62 110 138-9 82-59 137-116 137-56 0-104-56-112-137C18 86 75 25 144 25z" fill="#e8cdbc"/>
+    <path d="M42 310c28-71 65-108 111-108 48 0 89 38 119 108l38 380H-8l50-380z" fill="#091225"/>
+    <path d="M65 360h180" stroke="#f6fbff" stroke-width="15" opacity=".95"/>
+    <path d="M85 402h140" stroke="#e32638" stroke-width="13" opacity=".92"/>
+    <path d="M105 440h98" stroke="#1498ff" stroke-width="13" opacity=".88"/>
+    <path d="M44 106c18-70 112-105 170-41 23 25 25 61 12 101-22-49-58-69-112-70-32-1-52 4-70 10z" fill="#1d2433"/>
+    <circle cx="110" cy="156" r="7" fill="#101927"/>
+    <circle cx="174" cy="156" r="7" fill="#101927"/>
+    <path d="M112 203c22 14 48 14 70 0" stroke="#784135" stroke-width="8" stroke-linecap="round" fill="none" opacity=".55"/>
+    <text x="100" y="344" fill="#fff" font-size="25" font-weight="900" font-family="Inter, Arial">OGIER</text>
+    <text x="83" y="392" fill="#fff" font-size="19" font-weight="900" font-family="Inter, Arial">RALLY</text>
+    <text x="154" y="392" fill="#17a2ff" font-size="19" font-weight="900" font-family="Inter, Arial">FREAKS</text>
+  </g>
+
+  <g transform="translate(490 300)" filter="url(#shadow)">
+    <path d="M44 206C184 138 353 95 625 108" stroke="#006eff" stroke-width="8" opacity=".38" filter="url(#glow)"/>
+    <path d="M106 116c61-78 157-111 296-91 126 18 215 64 263 140l46 29H77l29-78z" fill="url(#car)" stroke="#289eff" stroke-width="4"/>
+    <path d="M195 30h214c57 8 106 36 152 83H133c21-39 42-67 62-83z" fill="#061326" stroke="#31c8ff" stroke-width="4"/>
+    <path d="M238 45h120l56 52H193l45-52z" fill="#174f82" opacity=".95"/>
+    <path d="M100 124h622c33 0 57 21 64 53l12 49H49l18-73c4-19 15-29 33-29z" fill="#061021" stroke="#118fff" stroke-width="4"/>
+    <path d="M265 144h182l-26 53H233z" fill="#e32638" opacity=".88"/>
+    <path d="M504 140h140c30 0 54 16 67 46H465z" fill="#0c69c7" opacity=".92"/>
+    <circle cx="196" cy="224" r="65" fill="#02050b" stroke="#a6dbff" stroke-width="10"/>
+    <circle cx="622" cy="224" r="65" fill="#02050b" stroke="#a6dbff" stroke-width="10"/>
+    <circle cx="196" cy="224" r="25" fill="#1d446e"/>
+    <circle cx="622" cy="224" r="25" fill="#1d446e"/>
+    <path d="M86 161h122" stroke="#f3f9ff" stroke-width="8" stroke-linecap="round"/>
+    <path d="M576 156h148" stroke="#25d3ff" stroke-width="9" stroke-linecap="round"/>
+    <text x="314" y="181" fill="#ffffff" font-size="29" font-weight="900" font-family="Inter, Arial">RALLY FREAKS</text>
+    <text x="280" y="72" fill="#e8f8ff" font-size="22" font-weight="900" font-family="Inter, Arial">OGIER</text>
+  </g>
+
+  <ellipse cx="970" cy="598" rx="260" ry="70" fill="#b4d9ff" opacity=".18" filter="url(#glow)"/>
+</svg>

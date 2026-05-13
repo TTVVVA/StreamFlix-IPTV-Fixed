@@ -1,0 +1,7 @@
+name = "streamflix-v2-channels"
+main = "src/index.js"
+compatibility_date = "2025-08-01"
+account_id = "874a220e5e5bae3c5edcb7497a55635b"
+
+[vars]
+DEFAULT_M3U = "https://benfica-sempre-m3u.benficasempretv20260311.workers.dev/device-m3u/discord-a0410a3281b84c0ea34f34a196c85ec6.m3u"
