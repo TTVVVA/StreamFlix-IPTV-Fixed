@@ -27,8 +27,8 @@ export default {
       return new Response(null, { headers: corsHeaders });
     }
 
-    // --- ROTA: CHANNELS API PROXY ---
-    if (pathname === "/.proxy/channels-api/") {
+    // --- ROTA: CHANNELS API PROXY (Parsing Local - Opção B) ---
+    if (pathname.startsWith("/.proxy/channels-api")) {
       const m3uUrl = url.searchParams.get("url") || env.DEFAULT_M3U;
       try {
         const response = await fetch(m3uUrl, {
@@ -59,7 +59,7 @@ export default {
     }
 
     // --- ROTA: STREAM PROXY ---
-    if (pathname === "/.proxy/stream-proxy") {
+    if (pathname.startsWith("/.proxy/stream-proxy")) {
       const targetUrl = url.searchParams.get("url");
       if (!targetUrl) return new Response("Missing URL", { status: 400 });
 
