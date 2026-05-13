@@ -155,7 +155,7 @@ export default {
           const htmlHeaders = new Headers(asset.headers);
           htmlHeaders.set("content-type", "text/html; charset=utf-8");
           htmlHeaders.set("access-control-allow-origin", "*");
-          htmlHeaders.set("Content-Security-Policy", "style-src 'self' 'unsafe-inline' blob: https://fonts.googleapis.com https://fonts.gstatic.com");
+          htmlHeaders.set("Content-Security-Policy", "default-src 'self' blob: data: https://*.discordsays.com https://*.discord.com; style-src 'self' 'unsafe-inline' blob: https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: *; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; connect-src 'self' *; media-src 'self' blob: data: *;");
           return new Response(html, { headers: htmlHeaders });
         }
 
