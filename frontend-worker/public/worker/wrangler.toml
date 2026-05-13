@@ -1,7 +1,0 @@
-name = "streamflix-v2-worker"
-main = "src/index.js"
-compatibility_date = "2026-02-14"
-account_id = "874a220e5e5bae3c5edcb7497a55635b"
-
-[vars]
-MAX_TIMEOUT_MS = "12000"

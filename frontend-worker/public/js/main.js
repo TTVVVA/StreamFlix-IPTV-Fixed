@@ -1,0 +1,1 @@
+import "/activity/app.js";
