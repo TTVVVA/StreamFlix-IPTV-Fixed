@@ -22,16 +22,21 @@ export default {
       "Access-Control-Allow-Headers": "Content-Type, Range",
     };
 
+    const jsonResponse = (data, status = 200) => new Response(JSON.stringify(data), {
+      status,
+      headers: { ...corsHeaders, "Content-Type": "application/json" }
+    });
+
     if (request.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
     // --- ROTA: LOGS ---
     if (pathname === "/api/log" || pathname === "/activity/log" || pathname === "/activity/session/log") {
-      return new Response(JSON.stringify({ ok: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      return jsonResponse({ ok: true });
     }
 
     // --- ROTA: SESSION ---
     if (pathname === "/api/session" || pathname === "/activity/session") {
-      return new Response(JSON.stringify({
+      return jsonResponse({
         ok: true,
         session: {
           channelsUrl: env.DEFAULT_M3U,
@@ -39,31 +44,45 @@ export default {
           activeChannelName: null,
           updatedAt: new Date().toISOString()
         }
-      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      });
     }
 
-    // --- ROTA: CHANNELS API (Proxy Simples com Lazy Load) ---
+    // --- ROTA: CHANNELS API (Fetch Direto + Parsing Local) ---
     if (pathname.startsWith("/.proxy/channels-api")) {
-      const m3uUrl = url.searchParams.get("url") || env.DEFAULT_M3U;
-      const onlyGroups = url.searchParams.get("onlyGroups");
-      const group = url.searchParams.get("group");
-      
-      try {
-        if (!m3uUrl) throw new Error("Sem URL de playlist");
-        
-        const cwUrl = new URL("https://streamflix-v2-channels.874a220e5e5bae3c5edcb7497a55635b.workers.dev/");
-        cwUrl.searchParams.set("url", m3uUrl);
-        if (group) cwUrl.searchParams.set("group", group);
-        if (onlyGroups) cwUrl.searchParams.set("onlyGroups", onlyGroups);
+      const m3uUrl = url.searchParams.get("url") || env.DEFAULT_M3U || "";
+      const group = url.searchParams.get("group") || "";
+      const onlyGroups = url.searchParams.get("onlyGroups") === "true" || url.searchParams.get("onlyGroups") === "1";
 
-        const response = await fetch(cwUrl.toString(), { 
-          headers: { "User-Agent": "VLC/3.0.18", "Accept": "*/*" } 
+      if (!m3uUrl) return jsonResponse({ ok: false, error: "Sem URL configurada" }, 400);
+
+      try {
+        const resp = await fetch(m3uUrl, {
+          headers: {
+            "User-Agent": "VLC/3.0.18 LibVLC/3.0.18",
+            "Accept": "*/*"
+          }
         });
 
-        const data = await response.json();
-        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
-      } catch (err) { 
-        return new Response(JSON.stringify({ ok: false, error: err.message }), { status: 500, headers: corsHeaders }); 
+        if (!resp.ok) return jsonResponse({ ok: false, error: `M3U: HTTP ${resp.status}` }, 502);
+
+        const text = await resp.text();
+        if (!text.includes("#EXTINF")) {
+          return jsonResponse({ ok: false, error: `Resposta inválida: ${text.slice(0, 80)}` }, 502);
+        }
+
+        const { channels, groups } = parseM3u(text, m3uUrl);
+
+        if (onlyGroups) return jsonResponse({ ok: true, groups });
+
+        if (group) {
+          const filtered = channels.filter(c => c.group === group);
+          return jsonResponse({ ok: true, group, channels: filtered });
+        }
+
+        return jsonResponse({ ok: true, channels: channels.slice(0, 150) });
+
+      } catch (err) {
+        return jsonResponse({ ok: false, error: err.message }, 500);
       }
     }
 
@@ -73,12 +92,12 @@ export default {
       const asset = await env.ASSETS.fetch(new Request(new URL(assetPath, request.url), request));
       if (asset.ok) {
         const ext = assetPath.substring(assetPath.lastIndexOf("."));
-        let response = asset;
         if (ext === ".html") {
           let html = await asset.text();
           html = html.replace(/__DISCORD_CLIENT_ID__/g, env.DISCORD_CLIENT_ID || "");
           const htmlHeaders = new Headers(asset.headers);
           htmlHeaders.set("Content-Security-Policy", "default-src 'self' blob: data: https://*.discordsays.com https://*.discord.com; style-src 'self' 'unsafe-inline' blob: https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: *; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; connect-src 'self' *; media-src 'self' blob: data: *;");
+          htmlHeaders.set("access-control-allow-origin", "*");
           return new Response(html, { headers: htmlHeaders });
         }
         return asset;
@@ -88,45 +107,47 @@ export default {
   }
 };
 
-function parseM3uOptimized(text, baseUrl, options) {
+function parseM3u(text, baseUrl) {
   const lines = text.split(/\r?\n/);
-  const groups = new Set();
   const channels = [];
-  let currentItem = null;
+  const groupSet = new Set();
+  let current = null;
 
   for (const rawLine of lines) {
     const line = rawLine.trim();
     if (!line || line.startsWith("#EXTM3U")) continue;
 
     if (line.startsWith("#EXTINF")) {
-      const groupMatch = line.match(/group-title="([^"]+)"/i);
-      const groupName = groupMatch ? groupMatch[1] : "Geral";
-      groups.add(groupName);
-
-      if (options.onlyGroups) continue;
-      if (options.targetGroup && groupName !== options.targetGroup) {
-        currentItem = null;
-        continue;
-      }
-
-      currentItem = { name: "Canal", group: groupName, logo: "" };
-      const logoMatch = line.match(/tvg-logo="([^"]+)"/i);
-      if (logoMatch) currentItem.logo = logoMatch[1];
-      const commaIndex = line.lastIndexOf(",");
-      if (commaIndex !== -1) currentItem.name = line.substring(commaIndex + 1).trim();
+      current = { name: "Canal", group: "Geral", logo: "", id: "" };
+      const g = line.match(/group-title="([^"]+)"/i);
+      if (g) current.group = g[1];
+      const id = line.match(/tvg-id="([^"]+)"/i);
+      if (id) current.id = id[1];
+      const logo = line.match(/tvg-logo="([^"]+)"/i);
+      if (logo) current.logo = logo[1];
+      const comma = line.lastIndexOf(",");
+      if (comma !== -1) current.name = line.substring(comma + 1).trim();
       continue;
     }
 
     if (line.startsWith("#")) continue;
 
-    if (currentItem && !options.onlyGroups) {
+    if (current) {
       try {
-        currentItem.url = new URL(line, baseUrl).toString();
-        channels.push(currentItem);
-      } catch (e) {}
-      currentItem = null;
+        const groupName = current.group;
+        groupSet.add(groupName);
+        channels.push({ ...current, url: new URL(line, baseUrl).toString() });
+      } catch (_) {}
+      current = null;
     }
   }
 
-  return options.onlyGroups ? { groups: Array.from(groups).sort() } : { channels };
+  const groups = Array.from(groupSet)
+    .map(name => ({ 
+      name, 
+      count: channels.filter(c => c.group === name).length 
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  return { channels, groups };
 }
