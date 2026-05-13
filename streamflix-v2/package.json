@@ -1,0 +1,56 @@
+{
+  "name": "streamflix",
+  "version": "2.3.0",
+  "description": "Netflix-style IPTV player with backend relay support for browser-safe streaming",
+  "main": "desktop/main.js",
+  "keywords": [
+    "iptv",
+    "streaming",
+    "netflix",
+    "player",
+    "m3u",
+    "live-tv"
+  ],
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "electron": "^40.4.1",
+    "electron-builder": "^26.7.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "desktop": "electron desktop/main.js",
+    "desktop:dev": "electron desktop/main.js",
+    "dist": "npm_config_userconfig=.npmrc electron-builder"
+  },
+  "author": "Chris <chrizmonsaji@proton.me>",
+  "license": "MIT",
+  "build": {
+    "appId": "com.streamflix.desktop",
+    "files": [
+      "desktop/**/*",
+      "lib/**/*",
+      "index.html",
+      "player.html",
+      "js/**/*",
+      "css/**/*",
+      "assets/**/*",
+      "README.md",
+      "package.json"
+    ],
+    "icon": "assets/streamflix-icon.png",
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
+  }
+}

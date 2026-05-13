@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>StreamFlix - Downloads</title>
+    <link rel="stylesheet" href="css/netflix-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#e50914">
+</head>
+<body class="download-page">
+    <script>
+        if (window.streamflixDesktop && window.streamflixDesktop.appMode === 'desktop') {
+            window.location.replace('./index.html?mode=desktop');
+        }
+    </script>
+    <header class="netflix-nav homepage-nav">
+        <div class="nav-left">
+            <h1 class="brand-logo"><i class="fas fa-play-circle"></i> StreamFlix</h1>
+            <nav class="nav-links">
+                <a href="./index.html">Home</a>
+                <a href="./player.html">Player</a>
+                <a href="./download.html" class="active">Downloads</a>
+            </nav>
+        </div>
+        <div class="nav-right">
+            <a class="nav-pill" href="./index.html">
+                <i class="fas fa-arrow-left"></i> Back Home
+            </a>
+        </div>
+    </header>
+
+    <main class="download-page-main">
+        <section class="download-hero">
+            <h1>Download StreamFlix Apps</h1>
+            <p>Install the native app with built-in relay playback for smoother streaming on Windows and Linux. Android APK build is in progress.</p>
+        </section>
+
+        <section class="download-grid">
+            <article class="download-card">
+                <div class="platform-icon"><i class="fab fa-windows"></i></div>
+                <h2>Windows Installer</h2>
+                <p>NSIS setup package for Windows 10/11 x64.</p>
+                <div class="download-meta">
+                    <span>File: <code>streamflix.Setup.2.3.0.exe</code></span>
+                    <span>Version: <strong>v2.3.0</strong></span>
+                </div>
+                <a class="download-btn" href="https://github.com/chriz-3656/streamflix/releases/download/v2.3.0/streamflix.Setup.2.3.0.exe">
+                    <i class="fas fa-download"></i> Download .exe
+                </a>
+            </article>
+
+            <article class="download-card">
+                <div class="platform-icon"><i class="fab fa-linux"></i></div>
+                <h2>Linux Package</h2>
+                <p>Debian package for Ubuntu and Debian based distributions.</p>
+                <div class="download-meta">
+                    <span>File: <code>streamflix_2.3.0_amd64.deb</code></span>
+                    <span>Version: <strong>v2.3.0</strong></span>
+                </div>
+                <a class="download-btn" href="https://github.com/chriz-3656/streamflix/releases/download/v2.3.0/streamflix_2.3.0_amd64.deb">
+                    <i class="fas fa-download"></i> Download .deb
+                </a>
+            </article>
+
+            <article class="download-card coming-soon-card">
+                <div class="platform-icon"><i class="fab fa-android"></i></div>
+                <h2>Android APK</h2>
+                <p>Native Android package is currently under development.</p>
+                <div class="download-meta">
+                    <span>File: <code>streamflix-android-v2.3.0.apk</code> (planned)</span>
+                    <span>Status: <strong>Coming Soon</strong></span>
+                </div>
+                <button class="download-btn disabled" type="button" disabled>
+                    <i class="fas fa-hourglass-half"></i> APK Coming Soon
+                </button>
+            </article>
+        </section>
+
+        <section class="download-details">
+            <div class="details-panel">
+                <h3>Install Instructions</h3>
+                <ol>
+                    <li>Download the installer for your platform from this page.</li>
+                    <li>Windows: run the <code>.exe</code> and follow setup prompts.</li>
+                    <li>Linux: run <code>sudo apt install ./streamflix_2.3.0_amd64.deb</code>.</li>
+                    <li>Launch StreamFlix from the app menu or desktop shortcut.</li>
+                </ol>
+            </div>
+
+            <div class="details-panel">
+                <h3>Release Details</h3>
+                <ol>
+                    <li>Release tag: <code>v2.3.0</code>.</li>
+                    <li>Includes local relay playback for HTTP/HTTPS stream compatibility.</li>
+                    <li>Improved channel handoff from homepage to player.</li>
+                    <li>Updated app icon and desktop packaging support.</li>
+                </ol>
+            </div>
+
+            <div class="details-panel">
+                <h3>Android APK Info (Planned)</h3>
+                <ol>
+                    <li>Target package: <code>streamflix-android-v2.3.0.apk</code> (planned naming).</li>
+                    <li>Base approach: PWA-capable web app packaged for Android app install flow.</li>
+                    <li>Release channel: GitHub Releases page when APK build is finalized.</li>
+                    <li>Until APK release, use the web app in mobile browser/PWA install mode.</li>
+                </ol>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

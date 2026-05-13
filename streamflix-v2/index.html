@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>StreamFlix - Premium IPTV Experience</title>
+    <link rel="stylesheet" href="css/netflix-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#e50914">
+    <meta name="streamflix-relay-base" content="https://streamflix-relay.chrizmonsaji.workers.dev">
+</head>
+<body class="homepage">
+    <!-- Netflix-Style Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo">
+                <h1 class="splash-title">
+                    <i class="fas fa-play-circle"></i>
+                    <span class="logo-text">StreamFlix</span>
+                </h1>
+            </div>
+            <div class="splash-loader">
+                <div class="loader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Homepage Content -->
+    <div class="homepage-container">
+        <header class="netflix-nav homepage-nav">
+            <div class="nav-left">
+                <button id="home-menu-toggle" class="nav-icon-btn" aria-label="Open menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="brand-logo"><i class="fas fa-play-circle"></i> StreamFlix</h1>
+                <nav class="nav-links">
+                    <a href="#" class="active">Home</a>
+                    <a href="#popular-channels">TV Shows</a>
+                    <a href="#all-channels">Live</a>
+                    <a href="./download.html" data-web-only>Downloads</a>
+                </nav>
+            </div>
+            <div class="nav-right">
+                <div class="playlist-toggle">
+                    <label for="home-playlist-select">Playlist</label>
+                    <select id="home-playlist-select">
+                        <option value="global">Global</option>
+                        <option value="india">India (Optional)</option>
+                    </select>
+                    <span class="playlist-badge">Recommended</span>
+                </div>
+                <button class="nav-pill" id="browse-channels-top">
+                    <i class="fas fa-th-large"></i> Browse
+                </button>
+            </div>
+        </header>
+
+        <div id="home-sidebar-overlay" class="home-sidebar-overlay"></div>
+        <aside id="home-sidebar" class="home-sidebar">
+            <div class="home-sidebar-header">
+                <h2><i class="fas fa-play-circle"></i> StreamFlix</h2>
+                <button id="home-sidebar-close" class="home-sidebar-close" aria-label="Close menu">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="home-sidebar-nav">
+                <a href="./index.html"><i class="fas fa-house"></i> Home</a>
+                <a href="./player.html"><i class="fas fa-tv"></i> Player</a>
+                <a href="#" id="pwa-install-btn" style="display: none;"><i class="fas fa-mobile-alt"></i> Install App</a>
+                <a href="./download.html" data-web-only><i class="fas fa-download"></i> Downloads</a>
+                <a href="./about.html"><i class="fas fa-info-circle"></i> About</a>
+                <a href="https://github.com/chriz-3656/streamflix/releases/tag/v2.3.0" target="_blank" rel="noopener noreferrer" data-web-only>
+                    <i class="fab fa-github"></i> Release v2.3.0
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Hero Section with Featured Content -->
+        <section class="hero-showcase">
+            <div class="featured-showcase">
+                <div class="showcase-content">
+                    <h1 class="showcase-title">Premium Live Streaming</h1>
+                    <p class="showcase-description">Experience thousands of live channels with crystal clear quality</p>
+                    <div class="showcase-actions">
+                        <button id="watch-now" class="btn-primary">
+                            <i class="fas fa-play"></i> Start Watching
+                        </button>
+                        <button id="browse-channels" class="btn-secondary">
+                            <i class="fas fa-th-large"></i> Browse Channels
+                        </button>
+                        <button id="play-custom-url" class="btn-secondary" style="margin-left: 10px; background: rgba(109, 109, 110, 0.7);">
+                            <i class="fas fa-link"></i> Play URL
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Netflix-Style Row Sections -->
+        <section class="content-rows">
+            <!-- Continue Watching Row -->
+            <div class="row-section">
+                <div class="row-header">
+                    <h2 class="row-title">Continue Watching</h2>
+                    <button class="row-arrow prev">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="row-arrow next">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="row-content" id="continue-watching">
+                    <div class="loading-placeholder">
+                        <div class="placeholder-card"></div>
+                        <div class="placeholder-card"></div>
+                        <div class="placeholder-card"></div>
+                        <div class="placeholder-card"></div>
+                        <div class="placeholder-card"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popular Channels Row -->
+            <div class="row-section">
+                <div class="row-header">
+                    <h2 class="row-title">Popular Channels</h2>
+                    <button class="row-arrow prev">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="row-arrow next">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="row-content" id="popular-channels">
+                    <div class="loading-placeholder">
+                        <div class="placeholder-card"></div>
+                        <div class="placeholder-card"></div>
+                        <div class="placeholder-card"></div>
+                        <div class="placeholder-card"></div>
+                        <div class="placeholder-card"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Showcase -->
+            <div class="categories-showcase">
+                <h2 class="section-title">Browse by Category</h2>
+                <div class="category-grid" id="category-showcase">
+                    <div class="category-card" data-category="news">
+                        <div class="category-image news-bg"></div>
+                        <div class="category-overlay">
+                            <h3>News & Sports</h3>
+                            <p>Stay updated with live news and sports</p>
+                        </div>
+                    </div>
+                    <div class="category-card" data-category="entertainment">
+                        <div class="category-image entertainment-bg"></div>
+                        <div class="category-overlay">
+                            <h3>Entertainment</h3>
+                            <p>Movies, series, and entertainment channels</p>
+                        </div>
+                    </div>
+                    <div class="category-card" data-category="music">
+                        <div class="category-image music-bg"></div>
+                        <div class="category-overlay">
+                            <h3>Music</h3>
+                            <p>Music channels from around the world</p>
+                        </div>
+                    </div>
+                    <div class="category-card" data-category="kids">
+                        <div class="category-image kids-bg"></div>
+                        <div class="category-overlay">
+                            <h3>Kids & Family</h3>
+                            <p>Family-friendly content for all ages</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Channels Grid -->
+            <div class="all-channels-section">
+                <div class="section-header">
+                    <h2>All Channels</h2>
+                    <div class="search-container">
+                        <input type="text" id="search-input" placeholder="Search channels...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                
+                <div class="channels-grid" id="all-channels">
+                    <div class="loading-placeholder">
+                        <div class="placeholder-card"></div>
+                        <div class="placeholder-card"></div>
+                        <div class="placeholder-card"></div>
+                        <div class="placeholder-card"></div>
+                        <div class="placeholder-card"></div>
+                        <div class="placeholder-card"></div>
+                    </div>
+                </div>
+                <div class="load-more-wrap">
+                    <button id="load-more-home" class="load-more-btn">Load More Channels</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="brand-info">
+                <h3>StreamFlix</h3>
+                <p>Netflix-style IPTV web player for live channel streaming.</p>
+                <p>Released: 2026</p>
+            </div>
+            <div class="developer-credits">
+                <p>Developer: <a href="https://github.com/chriz-3656" target="_blank" rel="noopener noreferrer">@chriz-3656</a></p>
+                <p>Email: <a href="mailto:chrizmonsaji@proton.me">chrizmonsaji@proton.me</a></p>
+                <p>Instagram: <a href="https://instagram.com/chriz__3656" target="_blank" rel="noopener noreferrer">@chriz__3656</a></p>
+                <p>Discord: <span class="footer-handle">chriz3656</span></p>
+                <p>© 2026 StreamFlix</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/pwa-register.js"></script>
+    <script src="js/homepage.js"></script>
+</body>
+</html>
