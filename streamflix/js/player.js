@@ -106,8 +106,18 @@ class NetflixIPTVPlayer {
 
     async loadPlaylist(type) {
         try {
+            console.log(`Loading ${type} playlist...`);
             this.showLoading(true);
-            const response = await fetch(this.playlists[type]);
+            
+            const url = this.playlists[type];
+            const relayBase = 'https://streamflix-v2-worker.cristianoronaldocr7.workers.dev';
+            const fetchUrl = `${relayBase}/api/relay?url=${encodeURIComponent(url)}`;
+            const response = await fetch(fetchUrl);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
             const playlistText = await response.text();
             this.parsePlaylist(playlistText);
             this.renderChannelGrid();
