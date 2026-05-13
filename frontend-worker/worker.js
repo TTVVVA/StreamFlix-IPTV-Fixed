@@ -86,6 +86,62 @@ export default {
       }
     }
 
+    // --- ROTA: STREAM PROXY (Com reescrita de M3U8 otimizada) ---
+    if (pathname.startsWith("/.proxy/stream-proxy")) {
+      let targetUrl = url.searchParams.get("url");
+      if (!targetUrl) return jsonResponse({ ok: false, error: "Missing URL" }, 400);
+
+      // Limpeza de URL recursiva (evita o erro manifestLoadError por URL malformada)
+      if (targetUrl.includes("/.proxy/stream-proxy")) {
+        try {
+          const innerUrl = new URL(targetUrl, url.origin);
+          targetUrl = innerUrl.searchParams.get("url") || targetUrl;
+        } catch (e) {}
+      }
+
+      try {
+        const response = await fetch(targetUrl, {
+          headers: {
+            "User-Agent": "VLC/3.0.18 LibVLC/3.0.18",
+            "Accept": "*/*",
+            "Range": request.headers.get("Range") || ""
+          }
+        });
+
+        const contentType = response.headers.get("Content-Type") || "";
+        let body = response.body;
+
+        // Reescrever apenas se for uma playlist M3U8 para garantir que segmentos passem pelo proxy
+        if (contentType.includes("mpegurl") || targetUrl.includes(".m3u8")) {
+          let text = await response.text();
+          const baseUrl = new URL(targetUrl);
+          
+          text = text.split('\n').map(line => {
+            const trimmedLine = line.trim();
+            if (!trimmedLine || trimmedLine.startsWith("#")) return line;
+            try {
+              const absoluteUrl = new URL(trimmedLine, baseUrl).toString();
+              return `/.proxy/stream-proxy?url=${encodeURIComponent(absoluteUrl)}`;
+            } catch (e) {
+              return line;
+            }
+          }).join('\n');
+          
+          body = text;
+        }
+
+        const responseHeaders = new Headers(response.headers);
+        Object.entries(corsHeaders).forEach(([k, v]) => responseHeaders.set(k, v));
+        
+        return new Response(body, {
+          status: response.status,
+          headers: responseHeaders
+        });
+      } catch (err) {
+        return jsonResponse({ ok: false, error: err.message }, 500);
+      }
+    }
+
     // --- LÓGICA DE ASSETS ---
     const assetPath = pathname === "/" ? "/index.html" : pathname;
     try {
