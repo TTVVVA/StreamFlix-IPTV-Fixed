@@ -45,16 +45,25 @@ export default {
     // --- ROTA: CHANNELS API (Proxy Simples com Lazy Load) ---
     if (pathname.startsWith("/.proxy/channels-api")) {
       const m3uUrl = url.searchParams.get("url") || env.DEFAULT_M3U;
-      const onlyGroups = url.searchParams.get("onlyGroups") === "true";
+      const onlyGroups = url.searchParams.get("onlyGroups");
       const group = url.searchParams.get("group");
       
       try {
-        const response = await fetch(m3uUrl, { headers: { "User-Agent": "VLC/3.0.18", "Accept": "*/*" } });
+        const cwUrl = new URL("https://streamflix-v2-channels.874a220e5e5bae3c5edcb7497a55635b.workers.dev/");
+        cwUrl.searchParams.set("url", m3uUrl);
+        if (group) cwUrl.searchParams.set("group", group);
+        if (onlyGroups) cwUrl.searchParams.set("onlyGroups", onlyGroups);
+
+        const response = await fetch(cwUrl.toString(), { 
+          headers: { "User-Agent": "VLC/3.0.18", "Accept": "*/*" } 
+        });
+
         if (!response.ok) return new Response(JSON.stringify({ ok: false }), { status: 502, headers: corsHeaders });
-        const text = await response.text();
-        const result = parseM3uOptimized(text, m3uUrl, { onlyGroups, targetGroup: group });
-        return new Response(JSON.stringify({ ok: true, ...result }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
-      } catch (err) { return new Response(JSON.stringify({ ok: false, error: err.message }), { status: 500, headers: corsHeaders }); }
+        const data = await response.json();
+        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      } catch (err) { 
+        return new Response(JSON.stringify({ ok: false, error: err.message }), { status: 500, headers: corsHeaders }); 
+      }
     }
 
     // --- LÓGICA DE ASSETS ---
