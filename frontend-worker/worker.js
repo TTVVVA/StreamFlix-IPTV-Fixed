@@ -95,10 +95,13 @@ export default {
         if (ext === ".html") {
           let html = await asset.text();
           html = html.replace(/__DISCORD_CLIENT_ID__/g, env.DISCORD_CLIENT_ID || "");
-          const htmlHeaders = new Headers(asset.headers);
-          htmlHeaders.set("Content-Security-Policy", "default-src 'self' blob: data: https://*.discordsays.com https://*.discord.com; style-src 'self' 'unsafe-inline' blob: https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: *; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; connect-src 'self' *; media-src 'self' blob: data: *;");
-          htmlHeaders.set("access-control-allow-origin", "*");
-          return new Response(html, { headers: htmlHeaders });
+          return new Response(html, {
+            headers: {
+              "content-type": "text/html; charset=utf-8",
+              "access-control-allow-origin": "*",
+              "Content-Security-Policy": "default-src * 'unsafe-inline' 'unsafe-eval' blob: data:; style-src * 'unsafe-inline' blob: data:; font-src * data:; img-src * blob: data:; media-src * blob: data:; connect-src * blob: data:; script-src * 'unsafe-inline' 'unsafe-eval' blob: data:"
+            }
+          });
         }
         return asset;
       }
