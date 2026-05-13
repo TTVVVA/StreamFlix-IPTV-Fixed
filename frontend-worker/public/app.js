@@ -667,7 +667,7 @@ async function loadSession() {
 
     const channelsUrl = data.session?.channelsUrl || new URLSearchParams(location.search).get("url") || "";
     if (channelsUrl) {
-      await loadChannels(channelsUrl);
+      await loadChannels(channelsUrl); // Isso agora carrega categorias por defeito
     } else {
       state.channels = data.session?.channels || fallbackChannels;
       renderChannels();
