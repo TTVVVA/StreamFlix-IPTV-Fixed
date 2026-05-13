@@ -49,6 +49,8 @@ export default {
       const group = url.searchParams.get("group");
       
       try {
+        if (!m3uUrl) throw new Error("Sem URL de playlist");
+        
         const cwUrl = new URL("https://streamflix-v2-channels.874a220e5e5bae3c5edcb7497a55635b.workers.dev/");
         cwUrl.searchParams.set("url", m3uUrl);
         if (group) cwUrl.searchParams.set("group", group);
@@ -58,7 +60,6 @@ export default {
           headers: { "User-Agent": "VLC/3.0.18", "Accept": "*/*" } 
         });
 
-        if (!response.ok) return new Response(JSON.stringify({ ok: false }), { status: 502, headers: corsHeaders });
         const data = await response.json();
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
       } catch (err) { 
