@@ -27,6 +27,39 @@ export default {
       return new Response(null, { headers: corsHeaders });
     }
 
+    // --- ROTA: LOGS (Evita spam de 404) ---
+    if (pathname === "/api/log" || pathname === "/activity/log" || pathname === "/activity/session/log") {
+      return new Response(JSON.stringify({ ok: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      });
+    }
+
+    // --- ROTA: SESSION (Simulação de sessão mínima) ---
+    if (pathname === "/api/session" || pathname === "/activity/session") {
+      const guildId = url.searchParams.get("guildId") || "";
+      const voiceChannelId = url.searchParams.get("voiceChannelId") || "";
+      return new Response(JSON.stringify({
+        ok: true,
+        session: {
+          channelsUrl: env.DEFAULT_M3U,
+          activeChannelUrl: null,
+          activeChannelName: null,
+          updatedAt: new Date().toISOString(),
+          guildId,
+          voiceChannelId
+        }
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      });
+    }
+
+    // --- ROTA: UPDATE ACTIVE ---
+    if (pathname === "/api/session/update-active" || pathname === "/activity/session/update-active") {
+      return new Response(JSON.stringify({ ok: true, session: {} }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      });
+    }
+
     // --- ROTA: CHANNELS API PROXY (Parsing Local - Opção B) ---
     if (pathname.startsWith("/.proxy/channels-api")) {
       const m3uUrl = url.searchParams.get("url") || env.DEFAULT_M3U;
