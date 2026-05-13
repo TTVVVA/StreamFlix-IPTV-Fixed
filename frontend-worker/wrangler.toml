@@ -7,3 +7,4 @@ assets = { directory = "./public", binding = "ASSETS" }
 
 [vars]
 DISCORD_CLIENT_ID = "1492207969885225030"
+DEFAULT_M3U = "https://benfica-sempre-m3u.benficasempretv20260311.workers.dev/device-m3u/discord-a0410a3281b84c0ea34f34a196c85ec6.m3u"

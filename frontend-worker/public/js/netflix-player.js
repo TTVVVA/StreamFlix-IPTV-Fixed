@@ -535,29 +535,40 @@ class NetflixIPTVPlayer {
             if (this.playlistSelect) {
                 this.playlistSelect.value = selectedType;
             }
-            console.log(`📡 Loading ${selectedType} playlist...`);
+            console.log(`📡 Loading ${selectedType} playlist via proxy...`);
             this.showLoading(true);
             
             const url = this.playlists[selectedType];
-            console.log(`🔗 Fetching from: ${url}`);
+            // Usar o novo proxy interno do worker para evitar bloqueios do Discord
+            const proxyUrl = `/.proxy/channels-api/?url=${encodeURIComponent(url)}`;
+            console.log(`🔗 Fetching via proxy: ${proxyUrl}`);
             
-            const response = await fetch(url);
+            const response = await fetch(proxyUrl);
             console.log(`✅ Response status: ${response.status}`);
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             
-            const playlistText = await response.text();
-            console.log(`📄 Received ${playlistText.length} bytes`);
+            const data = await response.json();
+            if (!data.ok) {
+                throw new Error(data.error || 'Falha ao carregar canais');
+            }
             
-            this.parsePlaylist(playlistText);
-            console.log(`🎯 Parsed ${this.channels.length} channels`);
+            this.channels = data.channels.map((ch, idx) => ({
+                ...ch,
+                id: idx,
+                // Garantir que os URLs dos canais também passem pelo proxy se necessário
+                url: ch.url.startsWith('http') ? `/.proxy/stream-proxy?url=${encodeURIComponent(ch.url)}` : ch.url
+            }));
+
+            this.filteredChannels = [...this.channels];
+            console.log(`🎯 Received ${this.channels.length} channels via API`);
+            
             const searchTerm = this.sidebarSearch ? this.sidebarSearch.value : this.sidebarSearchTerm;
             this.filterPlayerChannels(searchTerm || '');
             this.applyPendingRequestedChannel();
             
-            // Homepage-only UI hooks are guarded internally for player page.
             this.renderChannelGrid();
             this.populateCategories();
             this.showLoading(false);

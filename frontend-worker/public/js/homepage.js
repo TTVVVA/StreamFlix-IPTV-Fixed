@@ -172,11 +172,26 @@ class StreamFlixHomepage {
             }
             
             const playlistUrl = this.playlists[this.selectedPlaylist] || this.playlists.global;
-            console.log(`📡 Loading ${this.selectedPlaylist} playlist from homepage...`);
-            const response = await fetch(playlistUrl);
-            const playlistText = await response.text();
+            console.log(`📡 Loading ${this.selectedPlaylist} playlist via proxy...`);
             
-            this.parsePlaylist(playlistText);
+            const proxyUrl = `/.proxy/channels-api/?url=${encodeURIComponent(playlistUrl)}`;
+            const response = await fetch(proxyUrl);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            if (!data.ok) {
+                throw new Error(data.error || 'Falha ao carregar canais');
+            }
+
+            this.channels = data.channels.map((ch, idx) => ({
+                ...ch,
+                id: idx,
+                url: ch.url.startsWith('http') ? `/.proxy/stream-proxy?url=${encodeURIComponent(ch.url)}` : ch.url
+            }));
+
             localStorage.setItem(cacheKey, JSON.stringify(this.channels));
             this.processChannels();
         } catch (error) {
