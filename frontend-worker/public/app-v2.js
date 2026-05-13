@@ -697,7 +697,7 @@ async function loadChannels(url, group = null) {
     await logEvent("channels_groups_fetch_start", { url });
     setDiag(refs.sessionDiag, "warn", "Categorias: a carregar");
     try {
-      const proxyUrl = `/.proxy/channels-api/?onlyGroups=true&url=${encodeURIComponent(url)}`;
+      const proxyUrl = `/.proxy/channels-api?onlyGroups=1&url=${encodeURIComponent(url)}`;
       const response = await fetch(proxyUrl);
       const data = await response.json();
       if (data.ok && data.groups) {
@@ -716,7 +716,7 @@ async function loadChannels(url, group = null) {
   await logEvent("channels_fetch_start", { url, group });
   setDiag(refs.sessionDiag, "warn", `Canais [${group}]: a carregar`);
   try {
-    const proxyUrl = `/.proxy/channels-api/?group=${encodeURIComponent(group)}&url=${encodeURIComponent(url)}`;
+    const proxyUrl = `/.proxy/channels-api?group=${encodeURIComponent(group)}&url=${encodeURIComponent(url)}`;
     const response = await fetch(proxyUrl);
     const data = await response.json();
     if (data.ok && data.channels) {
