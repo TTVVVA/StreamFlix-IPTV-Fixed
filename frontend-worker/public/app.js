@@ -23,6 +23,9 @@ const state = {
   voiceChannelId: "",
   session: null,
   channels: [],
+  groupChannels: {},
+  activeGroup: null,
+  groups: [],
   activeIndex: -1,
   activeChannel: null,
   activeUpdatedAt: null,      // timestamp do canal activo remoto
@@ -689,59 +692,65 @@ async function loadSession() {
   }
 }
 
-async function loadChannels(url) {
-  await logEvent("channels_fetch_start", { url });
-  setDiag(refs.sessionDiag, "warn", "Canais: a carregar");
-
-  // USAR O PROXY DO DISCORD ACTIVITY (MAPADO NO WRANGLER.TOML)
-  const channelsApi = `/.proxy/channels-api/?url=${encodeURIComponent(url)}`;
-
-  try {
-    const response = await fetch(channelsApi);
-    const data = await response.json();
-    
-    if (data.ok && data.channels) {
-      if (state.channelsRetryTimer) clearTimeout(state.channelsRetryTimer);
-      state.channelsRetryTimer = null;
-      state.channelsRetryCount = 0;
-      state.channels = data.channels || [];
-      renderChannels();
-
-      if (!state.channels.length) {
-        markEmptyChannels();
-        setDiag(refs.sessionDiag, "warn", "Lista vazia");
-        showToast("Lista vazia.", "diag: o ficheiro .m3u/.m3u8 não devolveu canais.", "warn");
-        await logEvent("channels_fetch_ok", { count: 0 });
-        return;
+async function loadChannels(url, group = null) {
+  if (!group) {
+    await logEvent("channels_groups_fetch_start", { url });
+    setDiag(refs.sessionDiag, "warn", "Categorias: a carregar");
+    try {
+      const proxyUrl = `/.proxy/channels-api/?onlyGroups=true&url=${encodeURIComponent(url)}`;
+      const response = await fetch(proxyUrl);
+      const data = await response.json();
+      if (data.ok && data.groups) {
+        state.groups = data.groups;
+        state.activeGroup = null;
+        renderGroups();
+        setDiag(refs.sessionDiag, "ok", `${state.groups.length} categorias`);
       }
+    } catch (err) {
+      setDiag(refs.sessionDiag, "error", "Categorias: erro");
+      await logEvent("channels_groups_fetch_error", { message: err.message });
+    }
+    return;
+  }
 
-      setDiag(refs.sessionDiag, "ok", `Canais: ${state.channels.length}`);
-      showToast("Lista de canais carregada.", `diag: ${state.channels.length} canais encontrados.`);
-      await logEvent("channels_fetch_ok", { count: state.channels.length });
-    } else {
-      throw new Error(data.error || "Erro desconhecido no Worker");
+  await logEvent("channels_fetch_start", { url, group });
+  setDiag(refs.sessionDiag, "warn", `Canais [${group}]: a carregar`);
+  try {
+    const proxyUrl = `/.proxy/channels-api/?group=${encodeURIComponent(group)}&url=${encodeURIComponent(url)}`;
+    const response = await fetch(proxyUrl);
+    const data = await response.json();
+    if (data.ok && data.channels) {
+      state.channels = data.channels || [];
+      state.activeGroup = group;
+      renderChannels();
+      setDiag(refs.sessionDiag, "ok", `${state.channels.length} canais [${group}]`);
     }
   } catch (err) {
-    state.channels = [];
-    renderChannels();
-    markEmptyChannels();
     setDiag(refs.sessionDiag, "error", "Canais: erro");
-    showToast("Erro ao carregar canais.", `diag: ${err.payload?.error || err.message}`, "error");
-    await logEvent("channels_fetch_error", { status: err.status, message: err.message, payload: err.payload });
-    if (state.channelsRetryCount < 4) {
-      state.channelsRetryCount += 1;
-      const delay = state.channelsRetryCount === 1 ? 1200 : 2500;
-      if (state.channelsRetryTimer) clearTimeout(state.channelsRetryTimer);
-      state.channelsRetryTimer = setTimeout(() => {
-        void loadChannels(url);
-      }, delay);
-    }
+    await logEvent("channels_fetch_error", { message: err.message });
   }
 }
 
-function markEmptyChannels() {
-  refs.channelCount.textContent = "0 canais";
-  refs.channelsList.innerHTML = `<div class="channel-item is-empty">Lista vazia</div>`;
+function renderGroups() {
+  refs.channelCount.textContent = `${state.groups.length} categorias`;
+  refs.channelsList.innerHTML = "";
+  const fragment = document.createDocumentFragment();
+  state.groups.forEach((group) => {
+    const button = document.createElement("button");
+    button.className = "channel-item group-item";
+    button.type = "button";
+    button.innerHTML = `
+      <span class="channel-number">📁</span>
+      <span class="channel-name">${escapeHtml(group)}</span>
+      <span class="signal" aria-hidden="true"><i></i><i></i><i></i></span>
+    `;
+    button.addEventListener("click", () => {
+      markUserGesture("group.click");
+      loadChannels(state.session?.channelsUrl || DEFAULT_M3U, group);
+    });
+    fragment.appendChild(button);
+  });
+  refs.channelsList.appendChild(fragment);
 }
 
 function renderChannels(filter = "") {
@@ -750,11 +759,30 @@ function renderChannels(filter = "") {
     .map((channel, index) => ({ channel, index }))
     .filter(({ channel }) => (channel.name || "").toLowerCase().includes(normalized));
 
-  refs.channelCount.textContent = `${visible.length} canais`;
+  const countText = state.activeGroup ? `${visible.length} canais em ${state.activeGroup}` : `${visible.length} canais`;
+  refs.channelCount.textContent = countText;
   refs.channelsList.innerHTML = "";
 
+  // Botão para voltar às categorias
+  if (state.activeGroup) {
+    const backBtn = document.createElement("button");
+    backBtn.className = "channel-item back-item";
+    backBtn.style.background = "rgba(20, 152, 255, 0.1)";
+    backBtn.innerHTML = `
+      <span class="channel-number">⬅️</span>
+      <span class="channel-name">Voltar às categorias</span>
+    `;
+    backBtn.addEventListener("click", () => {
+      renderGroups();
+    });
+    refs.channelsList.appendChild(backBtn);
+  }
+
   if (!visible.length) {
-    refs.channelsList.innerHTML = `<div class="channel-item is-empty">Lista vazia</div>`;
+    const emptyDiv = document.createElement("div");
+    emptyDiv.className = "channel-item is-empty";
+    emptyDiv.textContent = "Lista vazia";
+    refs.channelsList.appendChild(emptyDiv);
     return;
   }
 
@@ -769,17 +797,18 @@ function renderChannels(filter = "") {
       <span class="channel-name">${escapeHtml(channel.name || `Canal ${index + 1}`)}</span>
       <span class="signal" aria-hidden="true"><i></i><i></i><i></i></span>
     `;
-    
-    // CORREÇÃO DO CLIQUE PARA REPRODUÇÃO
     button.addEventListener("click", () => {
       markUserGesture("channel.click");
       selectChannel(index, { autoplay: true });
     });
-    
     fragment.appendChild(button);
   });
-
   refs.channelsList.appendChild(fragment);
+}
+
+function markEmptyChannels() {
+  refs.channelCount.textContent = "0 canais";
+  refs.channelsList.innerHTML = `<div class="channel-item is-empty">Lista vazia</div>`;
 }
 
 function escapeHtml(value) {
