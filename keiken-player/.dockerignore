@@ -1,0 +1,7 @@
+# Don't copy local dependencies, install instead
+node_modules
+
+# Steve Jobs' legacy
+.DS_Store
+
+.env

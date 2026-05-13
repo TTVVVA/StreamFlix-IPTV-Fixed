@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>About StreamFlix - Premium IPTV Experience</title>
+    <link rel="stylesheet" href="css/netflix-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#e50914">
+    <style>
+        .about-page-main {
+            width: min(1120px, 100%);
+            margin: 0 auto;
+            padding: 7.4rem clamp(1rem, 3vw, 2.4rem) 2.4rem;
+        }
+        .about-hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .about-hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+        }
+        .about-hero p {
+            color: var(--text-soft);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        .about-card {
+            background: linear-gradient(165deg, #212121, #191919 70%);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+        .about-card i {
+            font-size: 2.5rem;
+            color: var(--brand);
+            margin-bottom: 1rem;
+        }
+        .about-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+        }
+        .about-card p {
+            color: var(--text-soft);
+            line-height: 1.6;
+        }
+        .tech-stack {
+            margin-top: 4rem;
+        }
+        .tech-stack h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            text-align: center;
+        }
+        .tech-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--line);
+        }
+        .tech-item i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+        .disclaimer-section {
+            margin-top: 4rem;
+            padding: 2rem;
+            background: rgba(229, 9, 20, 0.1);
+            border: 1px solid rgba(229, 9, 20, 0.3);
+            border-radius: var(--radius);
+            text-align: center;
+        }
+        .disclaimer-section h3 {
+            color: var(--brand);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body class="homepage">
+    <!-- Navigation -->
+    <header class="netflix-nav homepage-nav">
+        <div class="nav-left">
+            <button id="home-menu-toggle" class="nav-icon-btn" aria-label="Open menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="brand-logo"><i class="fas fa-play-circle"></i> StreamFlix</h1>
+            <nav class="nav-links">
+                <a href="./index.html">Home</a>
+                <a href="./index.html#popular-channels">TV Shows</a>
+                <a href="./index.html#all-channels">Live</a>
+                <a href="./download.html">Downloads</a>
+                <a href="#" class="active">About</a>
+            </nav>
+        </div>
+        <div class="nav-right">
+            <a href="./index.html" class="nav-pill">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </header>
+
+    <div id="home-sidebar-overlay" class="home-sidebar-overlay"></div>
+    <aside id="home-sidebar" class="home-sidebar">
+        <div class="home-sidebar-header">
+            <h2><i class="fas fa-play-circle"></i> StreamFlix</h2>
+            <button id="home-sidebar-close" class="home-sidebar-close" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="home-sidebar-nav">
+            <a href="./index.html"><i class="fas fa-house"></i> Home</a>
+            <a href="./player.html"><i class="fas fa-tv"></i> Player</a>
+            <a href="./download.html"><i class="fas fa-download"></i> Downloads</a>
+            <a href="./about.html"><i class="fas fa-info-circle"></i> About</a>
+            <a href="https://github.com/chriz-3656/streamflix/releases/tag/v2.3.0" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-github"></i> Release v2.3.0
+            </a>
+        </nav>
+    </aside>
+
+    <main class="about-page-main">
+        <section class="about-hero">
+            <h1>About StreamFlix</h1>
+            <p>A modern, Netflix-inspired web-based IPTV player that streams live TV channels from open playlists with a premium user experience.</p>
+        </section>
+
+        <section class="about-grid">
+            <div class="about-card">
+                <i class="fas fa-tv"></i>
+                <h3>Live Streaming</h3>
+                <p>Access thousands of live TV channels from around the world. Supports HLS (.m3u8) streams with adaptive quality for smooth playback on any connection.</p>
+            </div>
+            <div class="about-card">
+                <i class="fas fa-magic"></i>
+                <h3>Smart Relay</h3>
+                <p>Our intelligent backend relay system solves common streaming issues like CORS and mixed content, ensuring channels play reliably even on secure HTTPS sites.</p>
+            </div>
+            <div class="about-card">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Cross-Platform</h3>
+                <p>Designed for every screen. Use it as a PWA on your phone, a desktop app on your computer, or simply in your web browser. The experience is seamless.</p>
+            </div>
+        </section>
+
+        <section class="tech-stack">
+            <h2>Built With Modern Tech</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <i class="fab fa-js"></i>
+                    <h4>Vanilla JS</h4>
+                </div>
+                <div class="tech-item">
+                    <i class="fab fa-html5"></i>
+                    <h4>HTML5</h4>
+                </div>
+                <div class="tech-item">
+                    <i class="fab fa-css3-alt"></i>
+                    <h4>CSS3</h4>
+                </div>
+                <div class="tech-item">
+                    <i class="fab fa-node-js"></i>
+                    <h4>Node.js</h4>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-bolt"></i>
+                    <h4>HLS.js</h4>
+                </div>
+                <div class="tech-item">
+                    <i class="fab fa-cloudflare"></i>
+                    <h4>Cloudflare</h4>
+                </div>
+            </div>
+        </section>
+
+        <section class="disclaimer-section">
+            <h3><i class="fas fa-exclamation-triangle"></i> Disclaimer</h3>
+            <p>StreamFlix is an educational project and a video player interface. We do not host, distribute, or provide any IPTV content. All channels are sourced from publicly available repositories (like IPTV-org). Please ensure you have proper authorization to access any content you stream.</p>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="brand-info">
+                <h3>StreamFlix</h3>
+                <p>Netflix-style IPTV web player for live channel streaming.</p>
+                <p>Released: 2026</p>
+            </div>
+            <div class="developer-credits">
+                <p>Developer: <a href="https://github.com/chriz-3656" target="_blank" rel="noopener noreferrer">@chriz-3656</a></p>
+                <p>Email: <a href="mailto:chrizmonsaji@proton.me">chrizmonsaji@proton.me</a></p>
+                <p>Instagram: <a href="https://instagram.com/chriz__3656" target="_blank" rel="noopener noreferrer">@chriz__3656</a></p>
+                <p>Discord: <span class="footer-handle">chriz3656</span></p>
+                <p>© 2026 StreamFlix</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/pwa-register.js"></script>
+    <script>
+        // Simple sidebar logic for about page
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('home-menu-toggle');
+            const sidebar = document.getElementById('home-sidebar');
+            const overlay = document.getElementById('home-sidebar-overlay');
+            const closeBtn = document.getElementById('home-sidebar-close');
+
+            function toggleSidebar(show) {
+                if (show) {
+                    sidebar.classList.add('open');
+                    overlay.classList.add('visible');
+                    document.body.classList.add('home-sidebar-open');
+                } else {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('visible');
+                    document.body.classList.remove('home-sidebar-open');
+                }
+            }
+
+            if (menuToggle) menuToggle.addEventListener('click', () => toggleSidebar(true));
+            if (closeBtn) closeBtn.addEventListener('click', () => toggleSidebar(false));
+            if (overlay) overlay.addEventListener('click', () => toggleSidebar(false));
+        });
+    </script>
+</body>
+</html>

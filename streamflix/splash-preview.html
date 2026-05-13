@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splash Screen Preview</title>
+    <link rel="stylesheet" href="css/netflix-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Netflix-Style Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo">
+                <h1 class="splash-title">
+                    <i class="fas fa-play-circle"></i>
+                    <span class="logo-text">StreamFlix</span>
+                </h1>
+            </div>
+            <div class="splash-loader">
+                <div class="loader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding: 2rem; text-align: center;">
+        <h1 style="color: #e50914;">Splash Screen Preview</h1>
+        <p style="color: #808080;">The splash screen will fade out after 3 seconds</p>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            document.getElementById('splash-screen').style.display = 'none';
+        }, 3000);
+    </script>
+</body>
+</html>
