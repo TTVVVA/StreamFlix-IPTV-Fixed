@@ -3,7 +3,7 @@ import { DiscordSDK } from "/sdk/index.mjs";
 const HLS_CDN_PRIMARY = "/js/hls.min.js";
 const HLS_CDN_FALLBACK = "/lib/hls.min.js";
 // RESOLVER_BASE removido: /resolve Ã© now same-origin no worker principal (CSP fix)
-const BUILD = "worker-discord-activity-ux-error-b6";
+const BUILD = "worker-discord-activity-v2-categories";
 const DIAG_VERBOSE = true;
 const DIAG_HLS_EVENTS = true;
 const ACTIVITY_LOG_ENDPOINT = "/api/log";
