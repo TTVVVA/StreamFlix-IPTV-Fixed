@@ -119,7 +119,11 @@ export default {
         if (ext === ".html") {
           let html = await asset.text();
           html = html.replace(/__DISCORD_CLIENT_ID__/g, env.DISCORD_CLIENT_ID || "");
-          response = new Response(html, { headers: { "content-type": "text/html; charset=utf-8" } });
+          const htmlHeaders = new Headers(asset.headers);
+          htmlHeaders.set("content-type", "text/html; charset=utf-8");
+          htmlHeaders.set("access-control-allow-origin", "*");
+          htmlHeaders.set("Content-Security-Policy", "style-src 'self' 'unsafe-inline' blob: https://fonts.googleapis.com https://fonts.gstatic.com");
+          return new Response(html, { headers: htmlHeaders });
         }
 
         const newHeaders = new Headers(response.headers);
